@@ -28,7 +28,7 @@
 
     Установка: Настройки → Расширения → «+» → URL этого файла.
 
-    Копия для длинного URL живёт в репо transmission-send (t.js) —
+    Копия для длинного URL живёт в репо lampa-plugins (t.js) —
     при правке CONFIG синхронизировать оба файла.
 */
 
@@ -41,26 +41,30 @@
     window[FLAG] = true
 
     // поднять после правки CONFIG — настройки применятся заново
-    var VERSION = '11'
+    var VERSION = '12'
 
     var CONFIG = {
         // status: 1 — включён; 0 — установлен выключенным (в списке есть,
         // не исполняется; включается штатно в Настройки → Расширения)
         plugins: [
-            { url: 'https://0x3654.github.io/transmission-send/top.js', status: 1 },
-            { url: 'https://0x3654.github.io/transmission-send/transmission-send.js', status: 1 },
+            { url: 'https://0x3654.github.io/lampa-plugins/top.js', status: 1 },
+            { url: 'https://0x3654.github.io/lampa-plugins/transmission-send.js', status: 1 },
             // etor — «разблокировщик торрентов»: включает torrents_use
             // (возвращает «Парсер»/«TorrServer» в сторовских сборках)
             { url: 'http://cub.red/plugin/etor', status: 1 },
             // прокси TMDB через cub (устойчивость к блокировкам)
             { url: 'http://cub.red/plugin/tmdb-proxy', status: 1 }
-            // { url: 'https://0x3654.github.io/transmission-send/plex-sync.js', status: 1 }
+            // { url: 'https://0x3654.github.io/lampa-plugins/plex-sync.js', status: 1 }
         ],
 
         // вычищенные плагины: убрать из списка устройств, если остались
         // с прошлых версий бутстрапа (применяется однократно, вместе
-        // с настройками — ручная установка позже не трогается)
+        // с настройками — ручная установка позже не трогается);
+        // v12: старые адреса репо transmission-send (репозиторий переименован
+        // в lampa-plugins, Pages старого имени не редиректится)
         plugins_remove: [
+            'https://0x3654.github.io/transmission-send/top.js',
+            'https://0x3654.github.io/transmission-send/transmission-send.js',
             'https://0x3654.github.io/transmission-send/nnm-auto.js'
         ],
 
