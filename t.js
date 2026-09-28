@@ -41,7 +41,7 @@
     window[FLAG] = true
 
     // поднять после правки CONFIG — настройки применятся заново
-    var VERSION = '4'
+    var VERSION = '5'
 
     var CONFIG = {
         plugins: [
@@ -72,7 +72,27 @@
 
             // «Топ» вместо главной
             top_as_home: 'true'
-        }
+        },
+
+        // главное меню: скрыть всё, кроме Главная и Избранного
+        // (наши «Топ · TMDB»/«Топ · трекеры» добавляются плагином top
+        // и не попадают в скрытие); имена берём переводом ключей лампы —
+        // работает при любом языке интерфейса
+        menu_hide_keys: [
+            'menu_feed',        // Лента
+            'menu_movies',      // Фильмы
+            'menu_multmovie',   // Мультфильмы
+            'menu_tv',          // Сериалы
+            'title_persons',    // Персоны
+            'menu_catalog',     // Каталог
+            'menu_filter',      // Фильтр
+            'menu_relises',     // Релизы
+            'menu_anime',       // Аниме
+            'menu_history',     // История
+            'title_subscribes', // Подписки
+            'menu_timeline',    // Расписание
+            'menu_torrents'     // Торренты
+        ]
     }
 
     // отвечает ли локальный TorrServer (встроенный в приложение)
@@ -166,6 +186,16 @@
         try{
             if(Lampa.Storage.get(MARKER) !== VERSION){
                 for(var key in CONFIG.storage) Lampa.Storage.set(key, CONFIG.storage[key])
+
+                // главное меню: нативный редактор лампы скрывает пункты
+                // по ИМЕНАМ (menu_hide); переводим ключи в текущий язык
+                if(CONFIG.menu_hide_keys){
+                    Lampa.Storage.set('menu_hide', CONFIG.menu_hide_keys.map(function(k){
+                        return Lampa.Lang.translate(k)
+                    }).filter(function(name){
+                        return name && name.indexOf('menu_') !== 0 // непереведённый ключ — мимо
+                    }))
+                }
 
                 Lampa.Storage.set(MARKER, VERSION)
                 Lampa.Storage.set(MEM, '') // вернуться к авто-выбору ссылки
