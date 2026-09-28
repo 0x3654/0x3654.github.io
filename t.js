@@ -41,7 +41,7 @@
     window[FLAG] = true
 
     // поднять после правки CONFIG — настройки применятся заново
-    var VERSION = '3'
+    var VERSION = '4'
 
     var CONFIG = {
         plugins: [
@@ -62,7 +62,7 @@
             // фильтры топа (значения — как в настройках плагина top)
             top_min_quality:  '1080',
             top_voice_1:      'Дубляж',
-            top_voice_2:      'LostFilm',
+            top_voice_2:      'Многоголосый',
             top_trackers_sort: 'seeds',
             top_hide_watched: 'true',
             top_trackers_only: 'true',
