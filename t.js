@@ -41,7 +41,7 @@
     window[FLAG] = true
 
     // поднять после правки CONFIG — настройки применятся заново
-    var VERSION = '9'
+    var VERSION = '10'
 
     var CONFIG = {
         // status: 1 — включён; 0 — установлен выключенным (в списке есть,
@@ -86,6 +86,10 @@
             black_style: 'true',  // чёрный стиль — да
             start_page: 'last',   // стартовая страница — последняя
             screensaver: 'false', // заставка при бездействии — нет
+
+            // плагин Shots (cub): кнопка в карточке и кадры в плеере — нет
+            shots_in_card: 'false',
+            shots_in_player: 'false',
 
             // парсер: публичный Jackett-прокси cub (jac.red, ключ «1»)
             parser_use: 'true',
