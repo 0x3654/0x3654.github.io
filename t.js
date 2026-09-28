@@ -17,10 +17,14 @@
         пробой при каждом запуске: локальный TorrServer отвечает —
         «дополнительная», нет — «основная». Сам автозапуск встроенного
         TorrServer плагином не включается (нет моста в нативное меню) —
-        один раз включите руками: Настройки → Настройки (внизу списка) →
+        один раз руками: Настройки → «Настройки» (внизу списка) →
         TorrServer/автозапуск. Ручной выбор ссылки уважается: изменили
         «Использовать ссылку» сами — bootstrap больше её не трогает
         (до повышения VERSION)
+      • самолечение платформы Apple TV: если лампа определила платформу
+        неверно (окно в момент старта было не 1920×1080 — тогда пункт
+        «Настройки» с нативным меню пропадает), пересчитываем признак
+        после загрузки, когда размеры окна уже устоялись, и чиним
 
     Установка: Настройки → Расширения → «+» → URL этого файла.
 
@@ -37,7 +41,7 @@
     window[FLAG] = true
 
     // поднять после правки CONFIG — настройки применятся заново
-    var VERSION = '2'
+    var VERSION = '3'
 
     var CONFIG = {
         plugins: [
@@ -47,8 +51,8 @@
         ],
 
         storage: {
-            // сервер «Топа · трекеров» (tracker-top на micro, tsdproxy)
-            top_server_url: 'https://micro-tracker.tailnet.invalid',
+            // сервер «Топа · трекеров» (tracker-top, публичный домен)
+            top_server_url: 'https://top.0x3654.com',
 
             // TorrServer: основная — micro (tsdproxy), дополнительная —
             // встроенный TorrServer приложения (Apple TV/Android/macOS)
@@ -113,6 +117,17 @@
         probeLocal(function(alive){ cb(alive ? 'two' : 'one') })
     }
 
+    // похоже ли на Apple TV по текущему состоянию (вызывается после
+    // загрузки — размеры окна уже устоялись, в отличие от старта лампы);
+    // «ontouchstart» отсекает настоящий iPad (у tvOS тача нет)
+    function looksLikeAppleTV(){
+        var ua = (navigator.userAgent || '').toLowerCase()
+
+        return (ua.indexOf('ipad') > -1 || ua.indexOf('appletv') > -1 || ua.indexOf('apple tv') > -1) &&
+            !('ontouchstart' in window) &&
+            window.innerWidth === 1920 && window.innerHeight === 1080
+    }
+
     function init(){
         var Lampa = window.Lampa
 
@@ -159,6 +174,18 @@
             }
         }
         catch(e){ reload = true }
+
+        // платформа определилась неверно (не apple_tv), а по факту это она:
+        // Platform.is читает localStorage при каждом вызове, поэтому
+        // достаточно записать значение — пункт нативного меню вернётся
+        try{
+            if(Lampa.Platform.get() !== 'apple_tv' && looksLikeAppleTV()){
+                Lampa.Storage.set('platform', 'apple_tv')
+
+                reload = true
+            }
+        }
+        catch(e){}
 
         // активная ссылка TorrServer — пробой при каждом запуске;
         // значение, изменённое не нами, трогаем только после VERSION
