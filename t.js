@@ -41,7 +41,7 @@
     window[FLAG] = true
 
     // поднять после правки CONFIG — настройки применятся заново
-    var VERSION = '5'
+    var VERSION = '6'
 
     var CONFIG = {
         // status: 1 — включён; 0 — установлен выключенным (в списке есть,
@@ -95,7 +95,12 @@
             'title_subscribes', // Подписки
             'menu_timeline',    // Расписание
             'menu_torrents'     // Торренты
-        ]
+        ],
+
+        // cub-плагины, подтягиваемые лампой при старте (Спорт: ключ
+        // broadcast_name есть только в ихнем словаре, Shots — захардкожен;
+        // редактор меню пере-применяет скрытие к кнопкам, добавленным позже)
+        menu_hide_names: ['Спорт', 'Sport', 'Shots']
     }
 
     // отвечает ли локальный TorrServer (встроенный в приложение)
@@ -195,12 +200,15 @@
 
                 // главное меню: нативный редактор лампы скрывает пункты
                 // по ИМЕНАМ (menu_hide); переводим ключи в текущий язык
-                if(CONFIG.menu_hide_keys){
-                    Lampa.Storage.set('menu_hide', CONFIG.menu_hide_keys.map(function(k){
+                // и добавляем сырые имена cub-плагинов
+                if(CONFIG.menu_hide_keys || CONFIG.menu_hide_names){
+                    var names = (CONFIG.menu_hide_keys || []).map(function(k){
                         return Lampa.Lang.translate(k)
                     }).filter(function(name){
                         return name && name.indexOf('menu_') !== 0 // непереведённый ключ — мимо
-                    }))
+                    })
+
+                    Lampa.Storage.set('menu_hide', names.concat(CONFIG.menu_hide_names || []))
                 }
 
                 Lampa.Storage.set(MARKER, VERSION)
