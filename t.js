@@ -49,7 +49,6 @@
         plugins: [
             { url: 'https://0x3654.github.io/transmission-send/top.js', status: 1 },
             { url: 'https://0x3654.github.io/transmission-send/transmission-send.js', status: 1 },
-            { url: 'https://0x3654.github.io/transmission-send/nnm-auto.js', status: 0 },
             // etor — «разблокировщик торрентов»: включает torrents_use
             // (возвращает «Парсер»/«TorrServer» в сторовских сборках)
             { url: 'http://cub.red/plugin/etor', status: 1 },
