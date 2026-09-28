@@ -41,7 +41,7 @@
     window[FLAG] = true
 
     // поднять после правки CONFIG — настройки применятся заново
-    var VERSION = '10'
+    var VERSION = '11'
 
     var CONFIG = {
         // status: 1 — включён; 0 — установлен выключенным (в списке есть,
@@ -55,6 +55,13 @@
             // прокси TMDB через cub (устойчивость к блокировкам)
             { url: 'http://cub.red/plugin/tmdb-proxy', status: 1 }
             // { url: 'https://0x3654.github.io/transmission-send/plex-sync.js', status: 1 }
+        ],
+
+        // вычищенные плагины: убрать из списка устройств, если остались
+        // с прошлых версий бутстрапа (применяется однократно, вместе
+        // с настройками — ручная установка позже не трогается)
+        plugins_remove: [
+            'https://0x3654.github.io/transmission-send/nnm-auto.js'
         ],
 
         storage: {
@@ -230,6 +237,12 @@
 
                     Lampa.Storage.set('menu_hide', names.concat(CONFIG.menu_hide_names || []))
                 }
+
+                ;(CONFIG.plugins_remove || []).forEach(function(url){
+                    var plug = Lampa.Plugins.get().find(function(p){ return p.url === url })
+
+                    if(plug) Lampa.Plugins.remove(plug)
+                })
 
                 Lampa.Storage.set(MARKER, VERSION)
                 Lampa.Storage.set(MEM, '') // вернуться к авто-выбору ссылки
