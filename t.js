@@ -41,7 +41,7 @@
     window[FLAG] = true
 
     // поднять после правки CONFIG — настройки применятся заново
-    var VERSION = '7'
+    var VERSION = '8'
 
     var CONFIG = {
         // status: 1 — включён; 0 — установлен выключенным (в списке есть,
@@ -83,7 +83,13 @@
 
             // интерфейс
             background: 'false',  // показывать фон — нет
-            black_style: 'true'   // чёрный стиль — да
+            black_style: 'true',  // чёрный стиль — да
+
+            // парсер: публичный Jackett-прокси cub (jac.red, ключ «1»)
+            parser_use: 'true',
+            parser_torrent_type: 'jackett',
+            jackett_url: 'jac.red',
+            jackett_key: '1'
         },
 
         // главное меню: скрыть всё, кроме Главная и Избранного
