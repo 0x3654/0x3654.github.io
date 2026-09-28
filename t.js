@@ -44,10 +44,13 @@
     var VERSION = '5'
 
     var CONFIG = {
+        // status: 1 — включён; 0 — установлен выключенным (в списке есть,
+        // не исполняется; включается штатно в Настройки → Расширения)
         plugins: [
-            'https://0x3654.github.io/transmission-send/top.js',
-            'https://0x3654.github.io/transmission-send/transmission-send.js'
-            // 'https://0x3654.github.io/transmission-send/plex-sync.js'
+            { url: 'https://0x3654.github.io/transmission-send/top.js', status: 1 },
+            { url: 'https://0x3654.github.io/transmission-send/transmission-send.js', status: 1 },
+            { url: 'https://0x3654.github.io/transmission-send/nnm-auto.js', status: 0 }
+            // { url: 'https://0x3654.github.io/transmission-send/plex-sync.js', status: 1 }
         ],
 
         storage: {
@@ -172,9 +175,9 @@
         // доустановить недостающие плагины
         var installed = Lampa.Plugins.get().map(function(p){ return p.url })
 
-        CONFIG.plugins.forEach(function(url){
-            if(installed.indexOf(url) === -1)
-                Lampa.Plugins.add({ url: url, status: 1, author: '@0x3654' })
+        CONFIG.plugins.forEach(function(plug){
+            if(installed.indexOf(plug.url) === -1)
+                Lampa.Plugins.add({ url: plug.url, status: plug.status, author: '@0x3654' })
         })
 
         // настройки — только при первом запуске (или после повышения VERSION)
