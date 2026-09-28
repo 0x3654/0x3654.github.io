@@ -239,9 +239,11 @@
                 }
 
                 ;(CONFIG.plugins_remove || []).forEach(function(url){
-                    var plug = Lampa.Plugins.get().find(function(p){ return p.url === url })
+                    var list  = Lampa.Plugins.get()
 
-                    if(plug) Lampa.Plugins.remove(plug)
+                    for(var i = 0; i < list.length; i++){
+                        if(list[i].url === url){ Lampa.Plugins.remove(list[i]); break }
+                    }
                 })
 
                 Lampa.Storage.set(MARKER, VERSION)
