@@ -187,7 +187,10 @@
         var reload = false
 
         try{
-            if(Lampa.Storage.get(MARKER) !== VERSION){
+            // Storage лампы JSON-кодирует значения: get('5') вернёт ЧИСЛО 5,
+            // сравнение со строкой всегда ложно — вечная перезагрузка.
+            // Сравниваем строго через String (идиома top.js)
+            if(String(Lampa.Storage.get(MARKER) || '') !== VERSION){
                 for(var key in CONFIG.storage) Lampa.Storage.set(key, CONFIG.storage[key])
 
                 // главное меню: нативный редактор лампы скрывает пункты
